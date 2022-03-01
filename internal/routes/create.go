@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type (
@@ -30,19 +31,21 @@ func (r *request) CheckValidity() error {
 }
 
 // Create shorturl (id, url, expireAt) record from request
-func Create(c echo.Context) error {
-	req := new(request)
+func Create(db *mongo.Database) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		req := new(request)
 
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		if err := c.Bind(req); err != nil {
+			return c.JSON(http.StatusBadRequest, err.Error())
+		}
+
+		// check for request validity
+		if err := req.CheckValidity(); err != nil {
+			return c.JSON(http.StatusBadRequest, err.Error())
+		}
+
+		res := response{}
+
+		return c.JSON(http.StatusOK, res)
 	}
-
-	// check for request validity
-	if err := req.CheckValidity(); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	res := response{}
-
-	return c.JSON(http.StatusOK, res)
 }

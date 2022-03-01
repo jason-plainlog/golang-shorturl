@@ -8,6 +8,8 @@ import (
 type Config struct {
 	LISTEN_ADDR string // Address to listen for requests
 	BASE_URL    string // Base URL of api
+
+	MONGODB_URI string // MongoDB URI
 }
 
 var loadedFromEnv = false
@@ -29,6 +31,10 @@ func GetConfig() *Config {
 
 		if os.Getenv("BASE_URL") != "" {
 			config.BASE_URL = os.Getenv("BASE_URL")
+		}
+
+		if os.Getenv("MONGODB_URI") != "" {
+			config.MONGODB_URI = os.Getenv("MONGODB_URI")
 		}
 
 		loadedFromEnv = true
