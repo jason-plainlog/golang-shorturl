@@ -24,6 +24,7 @@ Configurations are loaded from the environment variables, if not provided, then 
 * `BASE_URL`: The base URL of the service, defaults to `http://localhost:8000`
 * `MAX_TOKEN`: The maximum amount of tokens to be generated and stored offline, defaults to `5000`
 * `MAX_URL_LEN`: The length limit of url string, defaults to `1024`
+* `MAX_ALIVE_DURATION`: The maximum duration the record stays in database, defaults to `8760h`
 * `MONGODB_URI`: The uri to connect to mongodb, defaults to `mongodb://localhost:27017`
 * `DATABASE`: The database to use, defaults to `shorturl`
 * `RECORD_COLLECTION`: The collection to store records, defaults to `records`
