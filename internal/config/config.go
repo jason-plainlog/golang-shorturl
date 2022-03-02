@@ -22,7 +22,7 @@ var config = Config{
 	LISTEN_ADDR: ":8000",
 	BASE_URL:    "http://localhost:8000",
 
-	MAX_TOKEN:   1000,
+	MAX_TOKEN:   5000,
 	MAX_URL_LEN: 1024,
 
 	MONGODB_URI:       "mongodb://localhost:27017",
