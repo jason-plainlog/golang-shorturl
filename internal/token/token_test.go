@@ -24,7 +24,7 @@ func TestGenToken(t *testing.T) {
 		t.FailNow()
 	}
 
-	records := client.Database("shorturl").Collection("records")
+	records := client.Database("shorturl_test").Collection("records")
 	go GenToken(records, tokenChan)
 
 	for i := 0; i < 100; i++ {

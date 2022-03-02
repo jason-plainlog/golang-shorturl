@@ -12,7 +12,7 @@ func TestSaveAndFindRecord(t *testing.T) {
 		t.FailNow()
 	}
 
-	records := client.Database("shorturl").Collection("records")
+	records := client.Database("shorturl_test").Collection("records")
 
 	r, err := FindRecord(records, "testid")
 	if err == nil {

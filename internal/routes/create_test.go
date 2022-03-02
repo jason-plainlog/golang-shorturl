@@ -26,11 +26,11 @@ func TestCreateRoute(t *testing.T) {
 	c := e.NewContext(req, rec)
 
 	client, _ := models.Connect()
-	records := client.Database("shorturl").Collection("records")
+	records := client.Database("shorturl_test").Collection("records")
 	tokenChan := make(chan string, 10)
 	go token.GenToken(records, tokenChan)
 
-	handler := Create(client.Database("shorturl"), tokenChan)
+	handler := Create(client.Database("shorturl_test"), tokenChan)
 	if err := handler(c); err != nil {
 		t.FailNow()
 	}
@@ -43,7 +43,7 @@ func TestCreateRoute(t *testing.T) {
 	json.Unmarshal(rec.Body.Bytes(), &resp)
 
 	// test get and redirect
-	handler = Get(client.Database("shorturl"))
+	handler = Get(client.Database("shorturl_test"))
 	if err := handler(c); err != nil {
 		t.FailNow()
 	}

@@ -17,7 +17,7 @@ func TestGetRoute(t *testing.T) {
 	c := e.NewContext(req, rec)
 
 	client, _ := models.Connect()
-	handler := Get(client.Database("shorturl"))
+	handler := Get(client.Database("shorturl_test"))
 
 	if err := handler(c); err != nil {
 		fmt.Print(err)
