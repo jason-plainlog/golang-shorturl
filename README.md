@@ -28,6 +28,7 @@ Configurations are loaded from the environment variables, if not provided, then 
 * `MONGODB_URI`: The uri to connect to mongodb, defaults to `mongodb://localhost:27017`
 * `DATABASE`: The database to use, defaults to `shorturl`
 * `RECORD_COLLECTION`: The collection to store records, defaults to `records`
+* `MEMCACHED_ADDRS`: The addresses of memcached services, separated by comma, defaults to `localhost:11211`
 
 ## API Endpoints
 ### GET `/{id}`
