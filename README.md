@@ -2,6 +2,8 @@
 
 A simple but scalable ShortURL service written in Golang.
 
+()[images/arch.jpg]
+
 ## Services
 * `server`
     - API backend server
