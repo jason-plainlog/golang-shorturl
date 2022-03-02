@@ -12,6 +12,9 @@ A simple but scalable ShortURL service written in Golang.
 * `cleaner`
     - Small service that periodically clean up the expired records from database.
 
+## Quickstart
+Run `docker compose up` or `docker-compose up`, and voila! The service will be served on localhost:8000.
+
 ## Build Executables
 ```sh
 go build cmd/server/server.go
