@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"url-shortener/internal/config"
+	"url-shortener/internal/models"
 
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -30,8 +32,12 @@ func (r *request) CheckValidity() error {
 	return nil
 }
 
+var cfg = config.GetConfig()
+
 // Create shorturl (id, url, expireAt) record from request
-func Create(db *mongo.Database) echo.HandlerFunc {
+func Create(db *mongo.Database, tokenChan chan string) echo.HandlerFunc {
+	records := db.Collection("records")
+
 	return func(c echo.Context) error {
 		req := new(request)
 
@@ -44,8 +50,20 @@ func Create(db *mongo.Database) echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
-		res := response{}
+		record := models.Record{
+			ID:       <-tokenChan,
+			URL:      req.URL,
+			ExpireAt: req.ExpireAt,
+		}
 
-		return c.JSON(http.StatusOK, res)
+		for err := record.Save(records); err == models.ErrIdInUse; {
+			record.ID = <-tokenChan
+			err = record.Save(records)
+		}
+
+		return c.JSON(http.StatusOK, response{
+			ID:       record.ID,
+			ShortURL: cfg.BASE_URL + "/" + record.ID,
+		})
 	}
 }
