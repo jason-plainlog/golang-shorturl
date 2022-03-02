@@ -2,6 +2,7 @@ package token
 
 import (
 	"testing"
+	"url-shortener/internal/config"
 	"url-shortener/internal/models"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -16,6 +17,8 @@ func TestGenRandomToken(t *testing.T) {
 	}
 }
 
+var cfg = config.GetConfig()
+
 func TestGenToken(t *testing.T) {
 	tokenChan := make(chan string, 10)
 
@@ -24,7 +27,7 @@ func TestGenToken(t *testing.T) {
 		t.FailNow()
 	}
 
-	records := client.Database("shorturl_test").Collection("records")
+	records := client.Database("shorturl_test").Collection(cfg.RECORD_COLLECTION)
 	go GenToken(records, tokenChan)
 
 	for i := 0; i < 100; i++ {

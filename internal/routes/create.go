@@ -44,7 +44,7 @@ var cfg = config.GetConfig()
 
 // Create shorturl (id, url, expireAt) record from request
 func Create(db *mongo.Database, tokenChan chan string) echo.HandlerFunc {
-	records := db.Collection("records")
+	records := db.Collection(cfg.RECORD_COLLECTION)
 
 	return func(c echo.Context) error {
 		req := new(request)

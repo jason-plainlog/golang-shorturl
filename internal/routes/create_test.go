@@ -26,7 +26,7 @@ func TestCreateRoute(t *testing.T) {
 	c := e.NewContext(req, rec)
 
 	client, _ := models.Connect()
-	records := client.Database("shorturl_test").Collection("records")
+	records := client.Database("shorturl_test").Collection(cfg.RECORD_COLLECTION)
 	tokenChan := make(chan string, 10)
 	go token.GenToken(records, tokenChan)
 

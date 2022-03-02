@@ -26,11 +26,11 @@ func main() {
 			panic(err)
 		}
 	}()
-	db := mongoClient.Database("shorturl")
+	db := mongoClient.Database(cfg.DATABASE)
 
 	// setting up go routine to generate tokens offline
 	tokenChan := make(chan string, cfg.MAX_TOKEN)
-	go token.GenToken(db.Collection("records"), tokenChan)
+	go token.GenToken(db.Collection(cfg.RECORD_COLLECTION), tokenChan)
 
 	// Setting up API backend server
 	server := echo.New()

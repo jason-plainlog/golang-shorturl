@@ -13,7 +13,7 @@ import (
 
 // Resovle shorturl id to redirect url or return 404 error
 func Get(db *mongo.Database) echo.HandlerFunc {
-	records := db.Collection("records")
+	records := db.Collection(cfg.RECORD_COLLECTION)
 
 	return func(c echo.Context) error {
 		id := c.Param("id")
