@@ -37,6 +37,13 @@ func (r *request) CheckValidity() error {
 		return fmt.Errorf("expireAt should be in the future")
 	}
 
+	if time.Until(r.ExpireAt) > cfg.MAX_ALIVE_DURATION {
+		return fmt.Errorf(
+			"expireAt too far from now, must before %s",
+			time.Now().Add(cfg.MAX_ALIVE_DURATION).UTC(),
+		)
+	}
+
 	return nil
 }
 

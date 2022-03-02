@@ -3,14 +3,16 @@ package config
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 type Config struct {
 	LISTEN_ADDR string // Address to listen for requests
 	BASE_URL    string // Base URL of api
 
-	MAX_TOKEN   int // Maximum tokens amount to generated offline
-	MAX_URL_LEN int // Maximum length of url to shrink
+	MAX_TOKEN          int           // Maximum tokens amount to generated offline
+	MAX_URL_LEN        int           // Maximum length of url to shrink
+	MAX_ALIVE_DURATION time.Duration // Maximum record alive time from creation time
 
 	MONGODB_URI       string // MongoDB URI
 	DATABASE          string // Database to be used for shorturl service
@@ -22,8 +24,9 @@ var config = Config{
 	LISTEN_ADDR: ":8000",
 	BASE_URL:    "http://localhost:8000",
 
-	MAX_TOKEN:   5000,
-	MAX_URL_LEN: 1024,
+	MAX_TOKEN:          5000,
+	MAX_URL_LEN:        1024,
+	MAX_ALIVE_DURATION: time.Hour * 24 * 365, // an year
 
 	MONGODB_URI:       "mongodb://localhost:27017",
 	DATABASE:          "shorturl",
@@ -51,6 +54,15 @@ func GetConfig() *Config {
 			if err != nil {
 				panic(err)
 			}
+		}
+
+		if os.Getenv("MAX_ALIVE_TIME") != "" {
+			duration, err := time.ParseDuration(os.Getenv("MAX_ALIVE_TIME"))
+			if err != nil {
+				panic(err)
+			}
+
+			config.MAX_ALIVE_DURATION = duration
 		}
 
 		if os.Getenv("DATABASE") != "" {
