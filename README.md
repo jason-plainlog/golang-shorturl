@@ -1,6 +1,12 @@
-# shorturl-golang
+# golang-shorturl
 
 A simple but scalable ShortURL service written in Golang.
+
+## Services
+* `server`
+    - API backend server
+* `cleaner`
+    - Small services that periodically clean up the expired records from database.
 
 ## Build Executables
 ```sh
