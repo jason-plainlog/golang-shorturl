@@ -24,7 +24,7 @@ func Get(db *mongo.Database) echo.HandlerFunc {
 		found := true
 
 		var result models.Record
-		if err := records.FindOne(ctx, bson.M{"id": id}).Decode(result); err != nil {
+		if err := records.FindOne(ctx, bson.M{"id": id}).Decode(&result); err != nil {
 			if err == mongo.ErrNoDocuments {
 				found = false
 			} else {
@@ -37,6 +37,6 @@ func Get(db *mongo.Database) echo.HandlerFunc {
 			return c.JSON(http.StatusNotFound, nil)
 		}
 
-		return c.Redirect(http.StatusTemporaryRedirect, "")
+		return c.Redirect(http.StatusTemporaryRedirect, result.URL)
 	}
 }

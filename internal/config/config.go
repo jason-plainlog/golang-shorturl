@@ -9,7 +9,8 @@ type Config struct {
 	LISTEN_ADDR string // Address to listen for requests
 	BASE_URL    string // Base URL of api
 
-	MAX_TOKEN int // Maximum tokens amount to generated offline
+	MAX_TOKEN   int // Maximum tokens amount to generated offline
+	MAX_URL_LEN int // Maximum length of url to shrink
 
 	MONGODB_URI string // MongoDB URI
 }
@@ -19,6 +20,7 @@ var config = Config{
 	LISTEN_ADDR: ":8000",
 	BASE_URL:    "http://localhost",
 	MAX_TOKEN:   1000,
+	MAX_URL_LEN: 1024,
 	MONGODB_URI: "mongodb://localhost:27017",
 }
 

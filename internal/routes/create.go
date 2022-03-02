@@ -25,6 +25,14 @@ type (
 
 // Check for request validity
 func (r *request) CheckValidity() error {
+	if r.URL == "" {
+		return fmt.Errorf("url can't be blank")
+	}
+
+	if len(r.URL) > cfg.MAX_URL_LEN {
+		return fmt.Errorf("the length of url can't exceed %d", cfg.MAX_URL_LEN)
+	}
+
 	if time.Now().After(r.ExpireAt) {
 		return fmt.Errorf("expireAt should be in the future")
 	}
