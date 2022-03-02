@@ -7,8 +7,10 @@ A simple but scalable ShortURL service written in Golang.
 ## Services
 * `server`
     - API backend server
+    - Including a token collection service that collects unused ids before getting request
+    - May have multiple server running at the same time
 * `cleaner`
-    - Small services that periodically clean up the expired records from database.
+    - Small service that periodically clean up the expired records from database.
 
 ## Build Executables
 ```sh
@@ -25,3 +27,21 @@ Configurations are loaded from the environment variables, if not provided, then 
 * `MONGODB_URI`: The uri to connect to mongodb, defaults to `mongodb://localhost:27017`
 * `DATABASE`: The database to use, defaults to `shorturl`
 * `RECORD_COLLECTION`: The collection to store records, defaults to `records`
+
+## API Endpoints
+### GET `/{id}`
+### POST `/api/v1/urls`
+Example Request Body (application/json)
+```json
+{
+    "url": "https://www.dcard.tw/f",
+    "expireAt": "2021-02-08T09:20:41Z"
+}
+```
+Response
+```json
+{
+    "id": "8RjJue",
+    "shortUrl": "http://localhost:8000/8RjJue"
+}
+```
