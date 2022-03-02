@@ -8,6 +8,7 @@ import (
 	"url-shortener/internal/routes"
 	"url-shortener/internal/token"
 
+	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/labstack/echo/v4"
 )
 
@@ -32,10 +33,16 @@ func main() {
 	tokenChan := make(chan string, cfg.MAX_TOKEN)
 	go token.GenToken(db.Collection(cfg.RECORD_COLLECTION), tokenChan)
 
+	// setting up memcached cache
+	cache := memcache.New(cfg.MEMCACHED_ADDRS...)
+	if err := cache.Ping(); err != nil {
+		panic(err)
+	}
+
 	// Setting up API backend server
 	server := echo.New()
 
-	server.GET("/:id", routes.Get(db))
+	server.GET("/:id", routes.Get(db, cache))
 	server.POST("/api/v1/urls", routes.Create(db, tokenChan))
 
 	server.Logger.Fatal(

@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -17,6 +18,8 @@ type Config struct {
 	MONGODB_URI       string // MongoDB URI
 	DATABASE          string // Database to be used for shorturl service
 	RECORD_COLLECTION string // Collection to store records
+
+	MEMCACHED_ADDRS []string // Memcached addresses
 }
 
 var loadedFromEnv = false
@@ -31,6 +34,8 @@ var config = Config{
 	MONGODB_URI:       "mongodb://localhost:27017",
 	DATABASE:          "shorturl",
 	RECORD_COLLECTION: "records",
+
+	MEMCACHED_ADDRS: []string{"localhost:11211"},
 }
 
 // Get config loaded from environment variable or default value
@@ -71,6 +76,10 @@ func GetConfig() *Config {
 
 		if os.Getenv("RECORD_COLLECTION") != "" {
 			config.RECORD_COLLECTION = os.Getenv("RECORD_COLLECTION")
+		}
+
+		if os.Getenv("MEMCACHED_ADDRS") != "" {
+			config.MEMCACHED_ADDRS = strings.Split(os.Getenv("MEMCACHED_ADDRS"), ",")
 		}
 
 		loadedFromEnv = true

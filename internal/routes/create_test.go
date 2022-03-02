@@ -11,6 +11,7 @@ import (
 	"url-shortener/internal/models"
 	"url-shortener/internal/token"
 
+	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/labstack/echo/v4"
 )
 
@@ -43,7 +44,8 @@ func TestCreateRoute(t *testing.T) {
 	json.Unmarshal(rec.Body.Bytes(), &resp)
 
 	// test get and redirect
-	handler = Get(client.Database("shorturl_test"))
+	cache := memcache.New(cfg.MEMCACHED_ADDRS...)
+	handler = Get(client.Database("shorturl_test"), cache)
 	if err := handler(c); err != nil {
 		t.FailNow()
 	}
