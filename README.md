@@ -7,7 +7,7 @@ A simple but scalable ShortURL service written in Golang.
 ## Services
 * `server`
     - API backend server
-    - Including a token collection service that collects unused ids before getting request
+    - Includs a token collection service that collects unused ids before getting request
     - May have multiple server running at the same time
 * `cleaner`
     - Small service that periodically clean up the expired records from database.
@@ -21,7 +21,7 @@ go build cmd/server/server.go
 go build cmd/cleaner/cleaner.go
 ```
 
-## Configuration through Environment Variables
+## Configurations
 Configurations are loaded from the environment variables, if not provided, then the default values will be used.
 * `LISTEN_ADDR`: The address that the server listens on, defaults to `:8000`
 * `BASE_URL`: The base URL of the service, defaults to `http://localhost:8000`
@@ -50,3 +50,20 @@ Response
     "shortUrl": "http://localhost:8000/8RjJue"
 }
 ```
+
+## Database, Cache and Packages Used
+
+### github.com/labstack/echo
+Go package `echo` is adopted as the web framework for its simplicity, extensibility and high performance. Other golang web framework packages like `gin` were also considered, but I have experiences with developing with `echo`, so it's adopted in final.
+
+### MongoDB
+Considering the use case, we basically only need to do key-value storing and searching instead of complex relation quering. So in this case, MongoDB seems to be a good choice. Also, MongoDB is well-known for its distributed architecture and high scalability, while SQL-based database like PostgreSQL is more diffcult to scale horizontally. Therefore MongoDB is adopted as the database.
+
+### go.mongodb.org/mongo-driver/mongo
+Go package `mongo` is the MongoDB Driver API package maintained by the MongoDB official, we use it to connect and operate on our database.
+
+### Memcached
+Memcached is a cache service that can be distributed deployed, in this project Memcached is adopted as the cache for speeding up the resolve time for frequently requested shorturls.
+
+### github.com/bradfitz/gomemcache
+Go package `gomemcache` is used as the interface to interact with Memcached server. Since there is no official package released, the most imported package is choosed.
