@@ -10,6 +10,7 @@ import (
 
 	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 var cfg = config.GetConfig()
@@ -41,6 +42,7 @@ func main() {
 
 	// Setting up API backend server
 	server := echo.New()
+	server.Use(middleware.BodyLimit("4K"))
 
 	server.GET("/:id", routes.Get(db, cache))
 	server.POST("/api/v1/urls", routes.Create(db, tokenChan))
