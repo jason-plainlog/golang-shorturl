@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.3"
 services:
   mongo:
     image: mongo
@@ -12,9 +12,14 @@ services:
     environment:
       MONGODB_URI: "mongodb://mongo:27017"
       MEMCACHED_ADDRS: "memcached:11211"
-  
+    depends_on:
+      - mongo
+      - memcached
+
   cleaner:
     build: .
     entrypoint: ./cleaner
     environment:
       MONGODB_URI: "mongodb://mongo:27017"
+    depends_on:
+      - mongo
